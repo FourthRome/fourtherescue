@@ -4,12 +4,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-
-enum
-{
-    BYTEVALUEBORDER = 0xFF,
-    SHIFT = 8
-};
+#include <limits.h>
 
 int
 main(int argc, char **argv)
@@ -24,11 +19,9 @@ main(int argc, char **argv)
     char buf[sizeof(temp)];
 
     while (scanf("%hu", &temp) > 0) {
-        for (int i = sizeof(temp) - 1; i >= 0; i--) {
-            buf[i] = temp & BYTEVALUEBORDER;
-            temp >>= SHIFT;
-        }
-        write(out, buf, 2);
+        buf[1] = temp;
+        buf[0] = temp >> CHAR_BIT;
+        write(out, buf, sizeof(buf));
     }
 
     close(out);
