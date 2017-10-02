@@ -4,15 +4,17 @@
 
 enum { BUFSIZE = 4096 };
 
-void
-copy_file(int in_fd, int out_fd)
+void copy_file(int in_fd, int out_fd)
 {
     char buf[BUFSIZE];
     ssize_t size;
     ssize_t ret;
-    while ((size = read(in_fd, buf, BUFSIZE)) > 0) {
+
+    while ((size = read(in_fd, buf, sizeof(buf))) > 0) {
         char *buf_p = buf;
-        while (size && ((ret = write(out_fd, buf_p, size) != size))) {
+
+        while (size) {
+            ret = write(out_fd, buf_p, size);
             if (ret == -1) {
                 perror("An error during write() occurred");
                 return;
