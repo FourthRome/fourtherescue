@@ -13,7 +13,7 @@ main(void)
     int len, num = 0, innum = 0, sign = 1;
     errno = 0;
 
-    while ((len = read(0, buf, sizeof(buf)))) {
+    while ((len = read(0, buf, sizeof(buf))) > 0) {
         if (errno) {
             perror("Read failed somewhere!");
             return 1;
@@ -54,8 +54,6 @@ main(void)
 
     if (num) {
         res += num * sign;
-
-        printf("%d\n", num);
     }
 
     printf("%Ld\n", res);
